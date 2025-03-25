@@ -7,6 +7,18 @@ const rootDir = process.cwd();
 const oldPkgName = packageJSON.name;
 const [oldOwner, oldRepo] = packageJSON.repository.split(":")[1].split("/");
 
+// update canonicals
+const canonicalPath = path.resolve(rootDir, "scripts", "publish-canonical.js");
+const canonicalContent = fs.readFileSync(canonicalPath, "utf-8");
+if (packageName.startsWith("@m2d/") && oldPkgName.split("/")[1]) {
+  fs.writeFileSync(
+    canonicalPath,
+    canonicalContent.replaceAll(oldPkgName.split("/")[1], packageName.split("/")[1]),
+  );
+} else {
+  fs.writeFileSync(canonicalPath, canonicalContent.replace(/\[.*?\]/, "[]"));
+}
+
 // Rebrand lib packageJSON
 packageJSON.name = packageName;
 packageJSON.description = "";
@@ -19,7 +31,7 @@ packageJSON.funding.unshift({
   type: "github",
   url: `https://github.com/sponsors/${owner}`,
 });
-packageJSON.keywords = packageJSON.keywords.slice(2);
+packageJSON.keywords = packageJSON.keywords.slice(5);
 
 fs.writeFileSync(
   path.resolve(rootDir, "lib", "package.json"),
@@ -80,11 +92,7 @@ fs.writeFileSync(pageFilePath, pageCode);
 // Update TODO.md
 const touchupTodo = content =>
   content
-    .replace(
-      "[repo settings]",
-      `[repo settings](https://github.com/${owner}/${repo}/settings/pages)`,
-    )
-    .replace(
+    .replaceAll(
       "[repository secret]",
       `[repository secret]((https://github.com/${owner}/${repo}/settings/secrets/actions))`,
     )
@@ -131,11 +139,6 @@ try {
 } catch {
   // empty
 }
-const docsWorkflowPath = path.resolve(workflowsPath, "docs.yml");
-fs.writeFileSync(
-  docsWorkflowPath,
-  fs.readFileSync(docsWorkflowPath, "utf-8").replace(oldOwner, owner).replaceAll(oldRepo, repo),
-);
 
 // Update SECURITY.md
 const secFile = path.resolve(rootDir, "SECURITY.md");
@@ -146,14 +149,13 @@ fs.writeFileSync(
 // clean up
 const { execSync } = require("child_process");
 
-// update typedoc config
-execSync(`sed -i -e 's/name:.*/name: "${title.replace(/\//g, "\\/")}",/' typedoc.config.js`);
-
 console.log("\x1b[32m", "re-installing dependencies after updates...");
 // reinstall dependencies --> this will update the pnpm-lock file as well which we need to add to commit
-execSync("pnpm i");
+execSync("pnpm i", { stdio: "inherit" });
 
-// clean lib/src and craete commit
+console.log("\x1b[32m", "cleaning up the lib/src and committing to repo...");
+// clean lib/src and create commit
 execSync(
-  'rm -rf ./lib/src/ && git add . && git commit -m "Rebrand 💖 <a href="https://mayank-chaudhari.vercel.app" target="_blank">Mayank Kumar Chaudhari</a> [skip ci]" && turbo telemetry disable',
+  'rm -rf ./lib/src/ && mv lib/src_template lib/src && git add . && git commit -m "Rebrand 💖 <a href="https://mayank-chaudhari.vercel.app" target="_blank">Mayank Kumar Chaudhari</a> [skip ci]" && turbo telemetry disable',
+  { stdio: "inherit" },
 );

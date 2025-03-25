@@ -19,7 +19,8 @@
     "react-mouse-trails": "^0.0.5",
     "react18-loaders": "latest",
     "react18-themes": "^3.2.0",
-    "md2docx-plugin-template": "workspace:*"
+    "@m2d/core": "latest",
+    "@m2d/emoji": "workspace:*"
   },
   "devDependencies": {
     "@repo/eslint-config": "workspace:*",
@@ -28,6 +29,6 @@
     "@types/react-dom": "^19.0.4",
     "@vitejs/plugin-react": "^4.3.4",
     "typescript": "^5.8.2",
-    "vite": "^6.2.3"
+    "vite": "^6.2.2"
   }
 }
