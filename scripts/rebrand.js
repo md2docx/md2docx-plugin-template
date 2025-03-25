@@ -13,7 +13,7 @@ const [owner, repo] = execSync(
   .trim()
   .split("/");
 
-const packageName = repo;
+const packageName = `@m2d/${repo}`;
 
 /** avoiding IIFE as formettter keeps misformettting IIFEs */
 const rebrandFn = async () => {
