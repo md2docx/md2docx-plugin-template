@@ -6,7 +6,7 @@ export const emojiPlugin: () => IPlugin = () => ({
     if (node.type === "text") {
       node.value = node.value.replace(
         /:[a-z0-9_+-]+:/g,
-        (match: keyof typeof emojis) => emojis[match] ?? match,
+        match => emojis[match.slice(1, -1) as keyof typeof emojis] ?? match,
       );
     }
     return [];

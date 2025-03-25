@@ -7,6 +7,7 @@ import remarkMath from "remark-math";
 import { toDocx } from "mdast2docx";
 import { tablePlugin, listPlugin, mathPlugin } from "mdast2docx/dist/plugins";
 import { NextResponse } from "next/server";
+import { emojiPlugin } from "@m2d/emoji";
 
 const docxProcessor = unified()
   .use(remarkParse)
@@ -24,7 +25,7 @@ export const GET = async () => {
   const buffer = await toDocx(
     mdast,
     {},
-    { plugins: [tablePlugin(), listPlugin(), mathPlugin()] },
+    { plugins: [tablePlugin(), listPlugin(), mathPlugin(), emojiPlugin()] },
     "arraybuffer",
   );
   return new NextResponse(new Uint8Array(buffer as ArrayBuffer), {

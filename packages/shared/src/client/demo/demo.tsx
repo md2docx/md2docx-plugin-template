@@ -14,6 +14,14 @@ import demoCode from "./demo.tsx?raw";
 import { useState } from "react";
 // import { remarkDocx } from "@m2d/remark-docx";
 import { toDocx } from "mdast2docx";
+import { emojiPlugin } from "@m2d/emoji";
+import {
+  tablePlugin,
+  listPlugin,
+  mathPlugin,
+  imagePlugin,
+  htmlPlugin,
+} from "mdast2docx/dist/plugins";
 
 /** React live demo */
 export function Demo() {
@@ -38,7 +46,20 @@ export function Demo() {
   const downloadDocx = () => {
     setLoading(true);
 
-    toDocx(mdast).then(blob => {
+    toDocx(
+      mdast,
+      {},
+      {
+        plugins: [
+          htmlPlugin(),
+          tablePlugin(),
+          listPlugin(),
+          mathPlugin(),
+          emojiPlugin(),
+          imagePlugin(),
+        ],
+      },
+    ).then(blob => {
       const url = URL.createObjectURL(blob as Blob);
       const link = document.createElement("a");
       link.href = url;
