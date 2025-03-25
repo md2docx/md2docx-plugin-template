@@ -43,7 +43,7 @@ This template offers the following pre-configured features. Additionally, your r
 
 This template is based on [Turborepo Template](https://github.com/react18-tools/turborepo-template/). But this one is optimized for md2docx plugins. It includes pre-configured unit-tests (in most cases, you don't event need to update any of the unit tests), a lot of extra stuff provided by the turborepo-template is removed, and comes with dependencies and scripts optimized for md2docx plugin development.
 
-To get started, simply click on the `"Use this template"` button to create a new repository based on this template, \*\*update [`sripts/rebrand.config.json`](./scripts/rebrand.config.json) if required, and install dependencies(Will automatically trigger rebrand.js). Customize it according to your requirements for your next JavaScript/TypeScript/React/Next.js library or project.
+To get started, simply click on the `"Use this template"` button to create a new repository based on this template, and install dependencies. Customize it according to your requirements for your next md2docx plugin.
 
 For detailed instructions and a checklist, please refer to [TODO.md](./TODO.md).
 
