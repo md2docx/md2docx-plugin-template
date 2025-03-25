@@ -19,6 +19,17 @@ if (packageName.startsWith("@m2d/") && oldPkgName.split("/")[1]) {
   fs.writeFileSync(canonicalPath, canonicalContent.replace(/\[.*?\]/, "[]"));
 }
 
+// Update test file
+const testFilePath = path.resolve(rootDir, "lib", "__tests__", "index.test.ts");
+const testFileContent = fs.readFileSync(testFilePath, "utf-8");
+fs.writeFileSync(
+  testFilePath,
+  testFileContent.replace(
+    new RegExp(oldPkgName.split("/")[1] || oldPkgName, "g"),
+    packageName.split("/")[1] || packageName,
+  ),
+);
+
 // Rebrand lib packageJSON
 packageJSON.name = packageName;
 packageJSON.description = "";

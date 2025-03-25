@@ -1,4 +1,4 @@
-import { describe, it, expect } from "vitest";
+import { describe, it } from "vitest";
 import { toDocx } from "@m2d/core"; // Adjust path based on your setup
 import { unified } from "unified";
 import remarkParse from "remark-parse";

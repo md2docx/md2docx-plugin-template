@@ -51,8 +51,12 @@ if (isPatch) {
 const { visibility } = JSON.parse(execSync("gh repo view --json visibility").toString());
 const provenance = visibility.toLowerCase() === "public" ? "--provenance" : "";
 
-/** Create release */
-execSync(`cd lib && pnpm build && npm publish ${provenance} --access public`);
+try {
+  /** Publish to NPM */
+  execSync(`cd lib && pnpm build && npm publish ${provenance} --access public`);
+} catch (err) {
+  console.error("Failed to publish to NPM -- ", err);
+}
 
 /** Create GitHub release */
 try {
@@ -63,5 +67,9 @@ try {
   execSync(`gh release create ${VERSION} --generate-notes --latest --title "Release v${VERSION}"`);
 }
 
-// Publish canonical packages
-execSync("node scripts/publish-canonical.js");
+try {
+  // Publish canonical packages
+  execSync("node scripts/publish-canonical.js");
+} catch {
+  console.error("Failed to publish canonical packages");
+}
