@@ -19,6 +19,27 @@ if (packageName.startsWith("@m2d/") && oldPkgName.split("/")[1]) {
   fs.writeFileSync(canonicalPath, canonicalContent.replace(/\[.*?\]/, "[]"));
 }
 
+// Update test file
+const oldPluginName = oldPkgName.split("/")[1] || oldPkgName;
+const pluginName = packageName.split("/")[1] || packageName;
+
+const testFilePath = path.resolve(rootDir, "lib", "__tests__", "index.test.ts");
+const testFileContent = fs.readFileSync(testFilePath, "utf-8");
+fs.writeFileSync(testFilePath, testFileContent.replace(new RegExp(oldPluginName, "g"), pluginName));
+
+// Update src_template
+const srcTemplatePath = path.resolve(rootDir, "lib", "src_template", "index.ts");
+const srcTemplateContent = fs.readFileSync(srcTemplatePath, "utf-8");
+fs.writeFileSync(
+  srcTemplatePath,
+  srcTemplateContent
+    .replace(new RegExp(oldPluginName, "g"), pluginName)
+    .replace(
+      new RegExp(oldPluginName[0].toUpperCase() + oldPluginName.slice(1), "g"),
+      pluginName[0].toUpperCase() + pluginName.slice(1),
+    ),
+);
+
 // Rebrand lib packageJSON
 packageJSON.name = packageName;
 packageJSON.description = "";
