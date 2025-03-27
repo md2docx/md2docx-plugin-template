@@ -9,8 +9,7 @@ on:
 jobs:
   publish:
     # Don't run just after creating repo from template
-    # Also avoid running after merging set-up PR
-    if: github.event.repository.owner.login == 'md2docx'
+    if: github.run_number > 1 && github.event.repository.owner.login == 'md2docx'
     runs-on: ubuntu-latest
     permissions:
       contents: write
