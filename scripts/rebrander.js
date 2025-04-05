@@ -40,6 +40,19 @@ fs.writeFileSync(
     ),
 );
 
+// update demo
+const demoPath = path.resolve(rootDir, "packages", "shared", "src", "client", "demo", "demo.tsx");
+const demoContent = fs.readFileSync(demoPath, "utf-8");
+fs.writeFileSync(
+  demoPath,
+  demoContent
+    .replace(new RegExp(oldPluginName, "g"), pluginName)
+    .replace(
+      new RegExp(oldPluginName[0].toUpperCase() + oldPluginName.slice(1), "g"),
+      pluginName[0].toUpperCase() + pluginName.slice(1),
+    ),
+);
+
 // Rebrand lib packageJSON
 packageJSON.name = packageName;
 packageJSON.description = "";
