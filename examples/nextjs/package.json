@@ -12,10 +12,10 @@
     "start": "next start"
   },
   "dependencies": {
-    "@m2d/core": "^0.0.3",
+    "@m2d/core": "^0.0.4",
     "@m2d/emoji": "workspace:*",
     "@repo/shared": "workspace:*",
-    "mdast2docx": "0.3.6",
+    "mdast2docx": "0.4.0",
     "next": "^15.2.4",
     "nextjs-darkmode-lite": "^1.0.10",
     "nextjs-themes": "^4.0.6",
@@ -36,6 +36,6 @@
     "@types/node": "^22.14.0",
     "@types/react": "^19.1.0",
     "@types/react-dom": "^19.1.1",
-    "typescript": "^5.8.2"
+    "typescript": "^5.8.3"
   }
 }
