@@ -1,5 +1,11 @@
 # @m2d/emoji
 
+## 0.1.2
+
+### Patch Changes
+
+- 68cb3a2: Update core package to v1
+
 ## 0.1.1
 
 ### Patch Changes

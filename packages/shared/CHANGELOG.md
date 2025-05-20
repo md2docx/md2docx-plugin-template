@@ -1,5 +1,12 @@
 # @repo/shared
 
+## 0.0.3
+
+### Patch Changes
+
+- Updated dependencies [68cb3a2]
+  - @m2d/emoji@0.1.2
+
 ## 0.0.2
 
 ### Patch Changes
