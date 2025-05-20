@@ -27,7 +27,7 @@ export const emojiPlugin: (options?: IEmojiPluginOptions) => IPlugin = options =
      * @param node - The MDAST node being processed.
      * @returns An empty array since no new nodes are being added.
      */
-    inline: async (_docx, node) => {
+    inline: (_docx, node) => {
       if (node.type === "text") {
         node.value = node.value.replace(
           /:[a-z0-9_+-]+:/g,

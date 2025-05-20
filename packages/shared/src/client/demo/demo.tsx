@@ -26,11 +26,7 @@ import {
 /** React live demo */
 export function Demo() {
   const [loading, setLoading] = useState(false);
-  const mdastProcessor = unified()
-    .use(remarkParse)
-    .use(remarkGfm)
-    .use(remarkFrontmatter)
-    .use(remarkMath);
+  const mdastProcessor = unified().use(remarkParse).use([remarkGfm, remarkFrontmatter, remarkMath]);
 
   const mdast = mdastProcessor.parse(md);
 
@@ -55,6 +51,7 @@ export function Demo() {
           tablePlugin(),
           listPlugin(),
           mathPlugin(),
+          // @ts-expect-error -- WIP
           emojiPlugin(),
           imagePlugin(),
         ],
