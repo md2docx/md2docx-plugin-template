@@ -51,7 +51,6 @@ export function Demo() {
           tablePlugin(),
           listPlugin(),
           mathPlugin(),
-          // @ts-expect-error -- WIP
           emojiPlugin(),
           imagePlugin(),
         ],
