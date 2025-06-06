@@ -1,5 +1,11 @@
 # @m2d/emoji
 
+## 0.1.3
+
+### Patch Changes
+
+- bc4d28e: Upgrade dependencies.
+
 ## 0.1.2
 
 ### Patch Changes
