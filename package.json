@@ -18,12 +18,12 @@
     "format"
   ],
   "devDependencies": {
-    "@changesets/cli": "^2.29.4",
+    "@changesets/cli": "^2.29.5",
     "@repo/typescript-config": "workspace:*",
-    "@types/node": "^22.15.30",
+    "@types/node": "^24.1.0",
     "enquirer": "^2.4.1",
-    "prettier": "^3.5.3",
-    "turbo": "^2.5.4"
+    "prettier": "^3.6.2",
+    "turbo": "^2.5.5"
   },
   "packageManager": "pnpm@9.15.0",
   "engines": {
