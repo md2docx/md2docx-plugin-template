@@ -12,7 +12,7 @@
     "lint:fix": "eslint src/ --fix"
   },
   "dependencies": {
-    "@m2d/core": "^1.6.0",
+    "@m2d/core": "^1.7.0",
     "@m2d/emoji": "workspace:*",
     "@repo/shared": "workspace:*",
     "nextjs-darkmode": "^1.0.10",
