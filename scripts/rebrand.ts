@@ -40,8 +40,8 @@ const rebrandFn = async () => {
     `rm .tkb
      mv ./scripts/.tkb ./.tkb
      rm -rf ./docs
-     sed -i '/\\.mdast-template\\.lst/d' .github/workflows/upgrade.yml
-     sed -i '/\\.mdast-template\\.lst/d' .github/workflows/docs.yml`
+     sed -i '/\\.md2doc-template\\.lst/d' .github/workflows/upgrade.yml
+     sed -i '/\\.md2doc-template\\.lst/d' .github/workflows/docs.yml`
       .split("\n")
       .forEach((cmd) => {
         execSync(cmd.trim(), { encoding: "utf8" });
@@ -212,7 +212,7 @@ const rebrandFn = async () => {
     JSON.stringify(
       {
         templateUrl: "https://github.com/md2docx/md2docx-plugin-template.git",
-        lastCommitFile: ".mdast-template.lst",
+        lastCommitFile: ".md2doc-template.lst",
       },
       null,
       2,
