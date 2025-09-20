@@ -1,7 +1,10 @@
-const fs = require("fs");
-const path = require("path");
-const { packageName, owner, repo, title } = require("./rebrand.config.json");
-const packageJSON = require("../lib/package.json");
+import { execSync } from "node:child_process";
+import fs from "node:fs";
+import path from "node:path";
+import packageJSON from "../lib/package.json";
+import config from "./rebrand.config.json";
+
+const { packageName, owner, repo, title } = config;
 
 const rootDir = process.cwd();
 const oldPkgName = packageJSON.name;
@@ -13,7 +16,10 @@ const canonicalContent = fs.readFileSync(canonicalPath, "utf-8");
 if (packageName.startsWith("@m2d/") && oldPkgName.split("/")[1]) {
   fs.writeFileSync(
     canonicalPath,
-    canonicalContent.replaceAll(oldPkgName.split("/")[1], packageName.split("/")[1]),
+    canonicalContent.replaceAll(
+      oldPkgName.split("/")[1],
+      packageName.split("/")[1],
+    ),
   );
 } else {
   fs.writeFileSync(canonicalPath, canonicalContent.replace(/\[.*?\]/, "[]"));
@@ -25,10 +31,18 @@ const pluginName = packageName.split("/")[1] || packageName;
 
 const testFilePath = path.resolve(rootDir, "lib", "__tests__", "index.test.ts");
 const testFileContent = fs.readFileSync(testFilePath, "utf-8");
-fs.writeFileSync(testFilePath, testFileContent.replace(new RegExp(oldPluginName, "g"), pluginName));
+fs.writeFileSync(
+  testFilePath,
+  testFileContent.replace(new RegExp(oldPluginName, "g"), pluginName),
+);
 
 // Update src_template
-const srcTemplatePath = path.resolve(rootDir, "lib", "src_template", "index.ts");
+const srcTemplatePath = path.resolve(
+  rootDir,
+  "lib",
+  "src_template",
+  "index.ts",
+);
 const srcTemplateContent = fs.readFileSync(srcTemplatePath, "utf-8");
 fs.writeFileSync(
   srcTemplatePath,
@@ -41,7 +55,15 @@ fs.writeFileSync(
 );
 
 // update demo
-const demoPath = path.resolve(rootDir, "packages", "shared", "src", "client", "demo", "demo.tsx");
+const demoPath = path.resolve(
+  rootDir,
+  "packages",
+  "shared",
+  "src",
+  "client",
+  "demo",
+  "demo.tsx",
+);
 const demoContent = fs.readFileSync(demoPath, "utf-8");
 fs.writeFileSync(
   demoPath,
@@ -72,7 +94,7 @@ fs.writeFileSync(
   JSON.stringify(packageJSON, null, 2),
 );
 
-const updatePkgAndRemoveChangelogs = dir => {
+const updatePkgAndRemoveChangelogs = (dir: string): void => {
   // update package.json for packages and examples
   const pkgPath = path.resolve(dir, "package.json");
   const pkg = JSON.parse(fs.readFileSync(pkgPath, "utf-8"));
@@ -95,10 +117,10 @@ const updatePkgAndRemoveChangelogs = dir => {
   }
 };
 
-["examples", "packages"].forEach(dir => {
-  fs.readdirSync(path.resolve(rootDir, dir)).forEach(f =>
-    updatePkgAndRemoveChangelogs(path.resolve(rootDir, dir, f)),
-  );
+["examples", "packages"].forEach((dir) => {
+  fs.readdirSync(path.resolve(rootDir, dir)).forEach((f) => {
+    updatePkgAndRemoveChangelogs(path.resolve(rootDir, dir, f));
+  });
 });
 
 try {
@@ -119,12 +141,21 @@ fs.writeFileSync(path.resolve(rootDir, "README.md"), readme);
 fs.writeFileSync(path.resolve(rootDir, "lib", "README.md"), readme);
 
 // Update page title
-const pageFilePath = path.resolve(rootDir, "examples", "nextjs", "src", "app", "page.tsx");
-const pageCode = fs.readFileSync(pageFilePath, "utf-8").replace("React 18 Loaders", title);
+const pageFilePath = path.resolve(
+  rootDir,
+  "examples",
+  "nextjs",
+  "src",
+  "app",
+  "page.tsx",
+);
+const pageCode = fs
+  .readFileSync(pageFilePath, "utf-8")
+  .replace("React 18 Loaders", title);
 fs.writeFileSync(pageFilePath, pageCode);
 
 // Update TODO.md
-const touchupTodo = content =>
+const touchupTodo = (content: string) =>
   content
     .replaceAll(
       "[repository secret]",
@@ -134,7 +165,10 @@ const touchupTodo = content =>
       "[private vulnerability reporting]",
       `[private vulnerability reporting](https://github.com/${owner}/${repo}/security)`,
     )
-    .replace("- [ ] Create a new GitHub repository", "- [x] Create a new GitHub repository");
+    .replace(
+      "- [ ] Create a new GitHub repository",
+      "- [x] Create a new GitHub repository",
+    );
 
 const todoPath = path.resolve(rootDir, "TODO.md");
 fs.writeFileSync(todoPath, touchupTodo(fs.readFileSync(todoPath, "utf-8")));
@@ -155,7 +189,7 @@ fs.writeFileSync(
 // Update workflows
 const workflowsPath = path.resolve(rootDir, ".github", "workflows");
 /** Update publish and manual-publish workflows */
-const updatePublishFlow = name => {
+const updatePublishFlow = (name: string) => {
   const publishWorkflowPath = path.resolve(workflowsPath, name);
   const publishWorkflow = fs
     .readFileSync(publishWorkflowPath, "utf-8")
@@ -169,23 +203,32 @@ updatePublishFlow("publish.yml");
 updatePublishFlow("manual-publish.yml");
 
 try {
-  fs.unlinkSync(path.resolve(workflowsPath, "setup.yml"));
+  fs.rmSync(path.resolve(workflowsPath, "setup.yml"));
 } catch {
   // empty
 }
+const docsWorkflowPath = path.resolve(workflowsPath, "docs.yml");
+fs.writeFileSync(
+  docsWorkflowPath,
+  fs
+    .readFileSync(docsWorkflowPath, "utf-8")
+    .replace(oldOwner, owner)
+    .replaceAll(oldRepo, repo),
+);
 
 // Update SECURITY.md
 const secFile = path.resolve(rootDir, "SECURITY.md");
 fs.writeFileSync(
   secFile,
-  fs.readFileSync(secFile, "utf-8").replace(`${oldOwner}/${oldRepo}`, `${owner}/${repo}`),
+  fs
+    .readFileSync(secFile, "utf-8")
+    .replace(`${oldOwner}/${oldRepo}`, `${owner}/${repo}`),
 );
-// clean up
-const { execSync } = require("child_process");
 
-console.log("\x1b[32m", "re-installing dependencies after updates...");
-// reinstall dependencies --> this will update the pnpm-lock file as well which we need to add to commit
-execSync("pnpm i", { stdio: "inherit" });
+// update typedoc config
+execSync(
+  `sed -i -e 's/name:.*/name: "${title.replace(/\\/g, "\\\\").replace(/\//g, "\\/")}",/' typedoc.config.js`,
+);
 
 console.log("\x1b[32m", "cleaning up the lib/src and committing to repo...");
 // clean lib/src and create commit

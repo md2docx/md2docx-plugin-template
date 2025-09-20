@@ -5,36 +5,38 @@
     "build": "turbo build",
     "clean": "turbo clean",
     "dev": "turbo dev",
-    "format": "prettier --write \"**/*.{ts,tsx,md,css,scss}\"",
-    "lint": "turbo lint",
-    "lint:fix": "turbo lint:fix",
+    "format": "biome check . --write",
+    "lint": "biome check .",
+    "lint:fix": "biome check . --write",
     "test": "turbo test",
     "typecheck": "turbo typecheck",
-    "preinstall": "node scripts/update-pm.js",
-    "rebrand": "node scripts/rebrand.js"
+    "upgrade": "tsx ./scripts/upgrade.ts",
+    "doc": "tsx scripts/doc.ts && typedoc && cp _config.yml docs && tsx scripts/add-frontmatter.ts",
+    "preinstall": "tsx scripts/update-pm.ts",
+    "prepare": "husky",
+    "rebrand": "tsx scripts/rebrand.ts",
+    "release": "tsx ./scripts/publish.ts",
+    "sync": "turborepo-template-upgrade"
   },
-  "pre-commit": [
-    "lint:fix",
-    "format"
-  ],
   "devDependencies": {
+    "@biomejs/biome": "2.2.4",
     "@changesets/cli": "^2.29.7",
     "@repo/typescript-config": "workspace:*",
     "@types/node": "^24.5.2",
     "enquirer": "^2.4.1",
-    "prettier": "^3.6.2",
-    "turbo": "^2.5.6"
+    "husky": "^9.1.7",
+    "tsx": "^4.20.5",
+    "turbo": "^2.5.6",
+    "turborepo-template-upgrade": "^0.6.2"
   },
-  "packageManager": "pnpm@9.15.0",
+  "packageManager": "pnpm@10.17.0",
   "engines": {
-    "node": ">=18"
-  },
-  "dependencies": {
-    "pre-commit": "^1.2.2"
+    "node": ">=20"
   },
   "pnpm": {
     "overrides": {
-      "cross-spawn@<6.0.6": ">=6.0.6"
+      "cross-spawn@<6.0.6": ">=6.0.6",
+      "next@>=15.0.0 <15.2.3": ">=15.2.3"
     }
   }
 }
