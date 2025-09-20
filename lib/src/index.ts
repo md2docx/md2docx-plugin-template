@@ -1,4 +1,4 @@
-import { IPlugin } from "@m2d/core";
+import type { IPlugin } from "@m2d/core";
 import emojis from "./emoji.json";
 
 interface IEmojiPluginOptions {
@@ -14,7 +14,9 @@ interface IEmojiPluginOptions {
  * conversion pipeline. It replaces recognized emoji shortcodes with their corresponding Unicode
  * characters during the MDAST transformation.
  */
-export const emojiPlugin: (options?: IEmojiPluginOptions) => IPlugin = options => {
+export const emojiPlugin: (options?: IEmojiPluginOptions) => IPlugin = (
+  options,
+) => {
   const consolidatedEmojis = {
     ...emojis,
     ...options?.emojis,
@@ -31,8 +33,10 @@ export const emojiPlugin: (options?: IEmojiPluginOptions) => IPlugin = options =
       if (node.type === "text") {
         node.value = node.value.replace(
           /:[a-z0-9_+-]+:/g,
-          match =>
-            consolidatedEmojis[match.slice(1, -1) as keyof typeof consolidatedEmojis] ?? match,
+          (match) =>
+            consolidatedEmojis[
+              match.slice(1, -1) as keyof typeof consolidatedEmojis
+            ] ?? match,
         );
       }
       return [];
