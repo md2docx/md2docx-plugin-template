@@ -96,7 +96,7 @@ If you find this useful:
 
 > `const` **emojiPlugin**: (`options?`: [`IEmojiPluginOptions`](-internal-.md#iemojipluginoptions)) => `IPlugin`
 
-Defined in: [index.ts:17](https://github.com/md2docx/md2docx-plugin-template/blob/01503f17a5e2a58a221f13b6d11a2c439ecbf8d8/lib/src/index.ts#L17)
+Defined in: [index.ts:17](https://github.com/md2docx/md2docx-plugin-template/blob/1f5e7aa2c27261f6b143b44774bed9e20e459b03/lib/src/index.ts#L17)
 
 This plugin adds support for emoji shortcodes (e.g., `:smile:`, `:rocket:`) in your Markdown-to-DOCX
 conversion pipeline. It replaces recognized emoji shortcodes with their corresponding Unicode
