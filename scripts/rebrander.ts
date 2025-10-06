@@ -11,7 +11,7 @@ const oldPkgName = packageJSON.name;
 const [oldOwner, oldRepo] = packageJSON.repository.split(":")[1].split("/");
 
 // update canonicals
-const canonicalPath = path.resolve(rootDir, "scripts", "publish-canonical.js");
+const canonicalPath = path.resolve(rootDir, "scripts", "publish-canonical.ts");
 const canonicalContent = fs.readFileSync(canonicalPath, "utf-8");
 if (packageName.startsWith("@m2d/") && oldPkgName.split("/")[1]) {
   fs.writeFileSync(
